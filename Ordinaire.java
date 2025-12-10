@@ -25,13 +25,36 @@ public class Ordinaire extends Square {
     @Override
     public void enter(Ball b){
         //compléter
-        System.out.println("La boule est entrée dans la case x = " + this.x + ", y = " + this.y);
+        System.out.println("La boule est entrée dans la case x = " + this.i + ", y = " + this.j);
     }
 
     @Override
-    public void touch(Ball b){
+    public void touch(Ball b) {
+
+    }
+
+    @Override
+    public void touchHorizontal(Ball b){
         if (!this.isEmpty()){
-            System.out.println("La boule est entrée en collision avec l'obstacle en x = " + this.x + ", y = " + this.y);
+            System.out.println("La boule est entrée en collision avec l'obstacle en x = " + this.i + ", y = " + this.j);
+            //ajouter du code pour gérer le rebondissement de la bille
+        }
+        //si la case est vide, on ne fait rien
+    }
+
+    @Override
+    public void touchVertical(Ball b){
+        if (!this.isEmpty()){
+            System.out.println("La boule est entrée en collision avec l'obstacle en x = " + this.i + ", y = " + this.j);
+            //ajouter du code pour gérer le rebondissement de la bille
+        }
+        //si la case est vide, on ne fait rien
+    }
+
+    @Override
+    public void touchCorner(Ball b){
+        if (!this.isEmpty()){
+            System.out.println("La boule est entrée en collision avec l'obstacle en x = " + this.i + ", y = " + this.j);
             //ajouter du code pour gérer le rebondissement de la bille
         }
         //si la case est vide, on ne fait rien
@@ -40,7 +63,7 @@ public class Ordinaire extends Square {
     @Override
     public void leave(Ball b) {
         //compléter
-        System.out.println("La boule est sortie de la case : x = " + this.x + ", y = " + this.y);
+        System.out.println("La boule est sortie de la case : x = " + this.i + ", y = " + this.j);
     }
 
     public String toString(){

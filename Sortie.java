@@ -22,7 +22,23 @@ public class Sortie extends Square {
 
     @Override
     public void touch(Ball b) {
+
+    }
+
+    @Override
+    public void touchHorizontal(Ball b) {
+        //return false;
         //On ne peut pas entrer en collision avec une case Sortie car elle ne contiendra pas d'obstacles
+    }
+
+    @Override
+    public void touchCorner(Ball b) {
+
+    }
+
+    @Override
+    public void touchVertical(Ball b) {
+
     }
 
     public String toString(){

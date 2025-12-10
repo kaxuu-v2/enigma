@@ -1,13 +1,18 @@
-    import java.lang.Math;
+import java.awt.event.MouseListener;
+import java.lang.Math;
 
     public class Ball {
+
+        //Definition des constantes donné par le sujet
         public static final double f = 0.005; //le facteur de friction
         public static final double f_a = 0.001; //le facteur d'accélération
+        public static final double rayon = 0.3; //rayon de la boule
 
+        private double x, y; //position de la boule
+        private double vx, vy; //vitesse de la boule
+        private double v; //vitesse absolue
 
-        private double x, y; //position de la bille
-        private double vx, vy; //vitesse de la bille
-        public final double rayon = 0.3; //rayon de la bille
+        public final double seuil = 0.18; //la vitesse a ne pas dépasser
 
         public Ball(double x, double y){
             this.x = x;
@@ -15,6 +20,8 @@
             this.vx = 0; //initialement, la bille n'aura pas de vitesse
             this.vy = 0;
         }
+
+        public double getSeuil(){ return this.seuil; }
 
         public double getX(){
             return this.x;
@@ -36,12 +43,23 @@
             return Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         }
 
+        private void limite(){
+            double v = this.vAbs();
+            if (v > seuil){
+                double ratio = this.seuil / v;
+                this.vx *= ratio;
+                this.vy *= ratio;
+            }
+
+        }
+
         public void avance(){ //on l'utilisera pour avancer la bille
+            limite();
             this.x += this.vx;
             this.y += this.vy;
         }
 
-        //Vecteur de direction de déplacement
+        //Vecteurs de direction de déplacement
         public double getDx(){
             double v = this.vAbs(); //on stocke le résultat pour éviter de le calculer 2 fois
             if (v == 0) {
@@ -61,15 +79,16 @@
         //Pour gérer les rebonds
         public void inverserVx() {
             this.vx = -this.vx;
+            System.out.println("Inversement du X");
         }
 
         public void inverserVy() {
             this.vy = -this.vy;
+            System.out.println("Inversement du Y");
         }
 
 
         //Méthodes liées aux frottements
-
         public void frottement(){
             double v = this.vAbs();
             if (v <= f){
@@ -85,5 +104,4 @@
             this.vx += f_a * sx;
             this.vy += f_a * sy;
         }
-
     }

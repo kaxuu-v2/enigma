@@ -20,6 +20,7 @@ public class Labyrinthe {
         return this.laby[y][x];
     }
 
+    //Inspiré du TP7
     public Labyrinthe(String file) {
         try {
             //ouverture du fichier
@@ -38,11 +39,11 @@ public class Labyrinthe {
                     Square s;
                     Character ch = line.charAt(c);
                     switch (ch) {
-                        case '#': s = new Mur(c, l); break; //quand il y a un mur, on affiche #
-                        case ' ': s = new Ordinaire(c, l); break; //quand c'est une case ordinaire " "
-                        case 'O': s = new Sortie(c, l); break; //quand c'est la sortie O
-                        //on pourra ajouter d'autres cases pour les obstacles
-                        default:  s =  new Ordinaire(c, l); break;
+                        case '#': s = new Mur(l, c); break; //quand il y a un mur, on affiche #
+                        case ' ': s = new Ordinaire(l, c); break; //quand c'est une case ordinaire " "
+                        case 'O': s = new Sortie(l, c); break; //quand c'est la sortie O
+                        //on pourra ajouter d'autres cases pour les obstacles ou autres types de cases
+                        default:  s =  new Ordinaire(l, c); break;
                     }
                     this.laby[l][c] = s;
                 }
