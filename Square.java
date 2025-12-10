@@ -14,8 +14,5 @@ public abstract class Square {
 
     //Donc on abandonne l'idée de faire une méthode touch()
     abstract public void touch(Ball b);
-    abstract public void touchHorizontal(Ball b); //verifie si la boule est en train de percuter une case (qui contiendra un obstacle)
-    abstract public void touchVertical(Ball b);
-    abstract public void touchCorner(Ball b);
 
 }
