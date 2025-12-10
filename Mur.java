@@ -31,7 +31,7 @@ public class Mur extends Square {
         double x = b.getX() + r;
         double y = b.getY() + r;
 
-        // cas 1 : le mur se trouve a droite de la boule
+        // cas 1 : le mur se trouve a droite de la boule /!\ A REVOIR 
         if (x + r > this.i + 1) {
             b.inverserVx();
             //cas 2 : le mur se trouve à gauche de la boule (ok)
@@ -41,11 +41,17 @@ public class Mur extends Square {
         //cas 3 : le mur se trouve en haut de la boule (ok)
         if (y - r < j + 1) {
             b.inverserVy();
-        } //cas 4 : le mur se trouve en bas de la boule
+        } //cas 4 : le mur se trouve en bas de la boule /!\ A REVOIR 
         else if (y + r > j + 1) {
             b.inverserVy();
         }
     }
+
+    /* 
+    Note : Je remarque que lorsqu'on dessine la boule, on la dessine en partant du coin supérieur gauche
+    donc les comparaisons sont faites en fonction de ce coin supérieur, c'est surement pour cette raison que 
+    les collisions avec le mur gauche et droite fonctionnent et pas celles des murs bas et droite. 
+    */
 
     public String toString(){
         return "#";
