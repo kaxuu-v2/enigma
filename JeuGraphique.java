@@ -39,13 +39,13 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 Square c = laby.getSquare(x,y);
 
                 if (c instanceof Mur){
-                    g.setColor(Color.BLACK); //on met les murs en noir
+                    g.setColor(Color.DARK_GRAY); //on met les murs en noir
                 }
                 if (c instanceof Sortie){
                     g.setColor(Color.GREEN); //on met la sortie en vert
                 }
                 if (c instanceof Ordinaire && c.isEmpty()){
-                    g.setColor(Color.WHITE); //on mettra du blanc pour les cases vides
+                    g.setColor(new Color(164, 116, 25)); //on mettra du blanc pour les cases vides
                 }
                 //ajouter les cas avec les autres types de cases
 
@@ -55,7 +55,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
             }
         }
         //Dessin de la boule
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
         int rayonPx = (int)(Ball.rayon * TAILLE_CASE);
 
         //Définition de la position de la boule en convertissant les coordonnées en int
@@ -65,36 +65,44 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         g.fillOval(xPx, yPx, rayonPx * 2, rayonPx * 2);
     }
 
-    //Méthode qui actualise le jeu
-    public void update(){
-        if (etat){
-            //on calcule la direction (différence entre le centre et la souris)
+    //Méthode qui actualise le jeu (ne fonctionne pas)
+
+    public void update() {
+        if (etat) {
             int centreX = this.getWidth() / 2;
             int centreY = this.getHeight() / 2;
             double dX = mouseX - centreX;
             double dY = mouseY - centreY;
 
+            // Appliquer l'accélération et les frottements
             this.boule.acceleration(dX * 0.05, dY * 0.05);
             this.boule.frottement();
-            this.boule.avance();
-            //System.out.println("Vitesse : " + boule.vAbs());
 
-            //code pour gérer les collisions avec les murs
-            //on va prendre la future case dans laquelle va se trouver la boule
-            int i = (int)(this.boule.getX() + this.boule.getVx());
-            int j = (int)(this.boule.getY() + this.boule.getVy());
+            // Stocker les coordonnées actuelles de la boule
+            double x = this.boule.getX();
+            double y = this.boule.getY();
+            double vx = this.boule.getVx();
+            double vy = this.boule.getVy();
 
-            // empêcher les dépassements d'indices
-            if (i < 0 || i >= laby.getLargeur() || j < 0 || j >= laby.getHauteur()) {
-                return;
+            // Calculer la future position de la boule
+            double futureX = x + vx;
+            double futureY = y + vy;
+
+            // Vérifier les collisions avec les murs
+            int futureI = (int) futureX;
+            int futureJ = (int) futureY;
+
+            // Empêcher les dépassements d'indices
+            if (futureI >= 0 && futureI < laby.getLargeur() && futureJ >= 0 && futureJ < laby.getHauteur()) {
+                Square s = this.laby.getSquare(futureI, futureJ);
+                if (s instanceof Mur) {
+                    s.touch(this.boule);
+                } else if (s instanceof Sortie){
+                    s.enter(this.boule);
+                }
             }
 
-            /// on vérifie si c'est un case intraversable (mur)
-            Square s = this.laby.getSquare(i,j);
-            if (s instanceof Mur){
-                s.touch(this.boule);
-            }
-
+            // Avancer la boule
             this.boule.avance();
         }
     }
@@ -134,6 +142,13 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
             this.mouseY = e.getY();
             }
         }
+
+    //Méthode pour charger d'autres niveaux
+    public void niveauSuivant(String f){
+        this.laby = new Labyrinthe(f);
+
+    }
+
     }
 
 

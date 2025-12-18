@@ -12,7 +12,7 @@ import java.lang.Math;
         private double vx, vy; //vitesse de la boule
         private double v; //vitesse absolue
 
-        public final double seuil = 0.15; //la vitesse a ne pas dépasser
+        public final double seuil = 0.2; //la vitesse a ne pas dépasser
 
         public Ball(double x, double y){
             this.x = x;
@@ -30,6 +30,10 @@ import java.lang.Math;
         public double getY(){
             return this.y;
         }
+
+        public void setX(double x){ this.x = x;}
+
+        public void setY(double y){ this.y = y;}
 
         public double getVx(){
             return this.vx;
