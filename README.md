@@ -19,3 +19,7 @@ Quelques idées qu'on pourra coder une fois le problème des collisions réglé 
 
 Pour tester le projet : 
 Compiler les fichiers au terminal puis executer fichier Jeu ou bien sinon utiliser IntelliJ qui compile tout à la fois 
+
+Historique : 
+18/12 - J'ai terminé de coder la sortie et j'y ai ajouté une boite de dialogue qui donne le choix entre fermer le niveau et passer au suivant (voir code Sortie.java)
+
