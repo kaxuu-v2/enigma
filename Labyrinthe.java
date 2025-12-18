@@ -7,6 +7,10 @@ public class Labyrinthe {
 
     private int hauteur, largeur;
     private Square[][] laby; //le labyrinthe est défini par un tableau 2D de squares (cases)
+    private int initX, initY;
+
+    public int getInitX(){ return this.initX;}
+    public int getInitY(){ return this.initY;}
 
     public int getHauteur(){
         return this.hauteur;
@@ -39,9 +43,13 @@ public class Labyrinthe {
                     Square s;
                     Character ch = line.charAt(c);
                     switch (ch) {
-                        case '#': s = new Mur(l, c); break; //quand il y a un mur, on affiche #
-                        case ' ': s = new Ordinaire(l, c); break; //quand c'est une case ordinaire " "
-                        case 'O': s = new Sortie(l, c); break; //quand c'est la sortie O
+                        case '#': s = new Mur(l, c); break;
+                        case ' ': s = new Ordinaire(l, c); break;
+                        case 'O': s = new Sortie(l, c); break;
+                        case 'D' :
+                            this.initX = l;
+                            this.initY = c;
+                            s = new Ordinaire(l,c); break;
                         //on pourra ajouter d'autres cases pour les obstacles ou autres types de cases
                         default:  s =  new Ordinaire(l, c); break;
                     }

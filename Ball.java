@@ -12,7 +12,7 @@ import java.lang.Math;
         private double vx, vy; //vitesse de la boule
         private double v; //vitesse absolue
 
-        public final double seuil = 0.2; //la vitesse a ne pas dépasser
+        public final double seuil = 0.15; //la vitesse a ne pas dépasser
 
         public Ball(double x, double y){
             this.x = x;
@@ -89,6 +89,12 @@ import java.lang.Math;
         public void inverserVy() {
             this.vy = -this.vy;
             System.out.println("Inversement du Y");
+        }
+
+        //on rajoute cette méthode pour que la vitesse soit remise a 0 apres chaque niveau
+        public void stop(){
+            this.vx = 0;
+            this.vy = 0;
         }
 
 

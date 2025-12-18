@@ -8,6 +8,9 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     private Ball boule;
     private boolean etat; //pour stocker l'état en jeu qui sera toujours par défaut en false
 
+    public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt"};
+    private int currentLevel = 0;
+
     public final int TAILLE_CASE = 50; //taille en pixels pour une case
 
     //Position de la souris
@@ -45,7 +48,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                     g.setColor(Color.GREEN); //on met la sortie en vert
                 }
                 if (c instanceof Ordinaire && c.isEmpty()){
-                    g.setColor(new Color(164, 116, 25)); //on mettra du blanc pour les cases vides
+                    g.setColor(new Color(6,64,43)); //on mettra du blanc pour les cases vides
                 }
                 //ajouter les cas avec les autres types de cases
 
@@ -98,7 +101,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 if (s instanceof Mur) {
                     s.touch(this.boule);
                 } else if (s instanceof Sortie){
-                    s.enter(this.boule);
+                    niveauSuivant();
+                    return;
                 }
             }
 
@@ -144,8 +148,46 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         }
 
     //Méthode pour charger d'autres niveaux
-    public void niveauSuivant(String f){
-        this.laby = new Labyrinthe(f);
+    public void niveauSuivant(){
+        this.etat = false;
+        boule.setX(-32.);
+        boule.setY(-32.);
+        this.repaint();
+        int choix = JOptionPane.showOptionDialog(
+                this,
+                "Bravo ! Vous avez terminé le niveau !",
+                "Niveau terminé !",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                new ImageIcon("stringformat.ico"), //on pourra ajouter une icone plus tard
+                new String[]{"Niveau suivant", "Quitter"},
+                "Niveau suivant"
+        );
+
+        // gestion du choix du joueur
+        if (choix == JOptionPane.YES_OPTION) {
+            this.currentLevel++;
+            if (this.currentLevel < this.levels.length){
+                this.laby = new Labyrinthe(levels[currentLevel]);
+
+                //mise en place du niveau suivant
+                double initialX = this.laby.getInitX() + 0.5;
+                double initialY = this.laby.getInitY() + 0.5;
+                this.boule.setX(initialX);
+                this.boule.setY(initialY);
+                this.boule.stop();
+                this.repaint();
+
+                //compléter
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Felicitations ! Vous avez fini le jeu !");
+                System.exit(0);
+            }
+        } else {
+            // Fermer le jeu
+            System.exit(0);
+        }
 
     }
 
