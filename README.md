@@ -16,7 +16,7 @@ Quelques idées qu'on pourra coder une fois le problème des collisions réglé 
 - Case qui éléctrocute : si on va dessus on se fait électrocuter pendant quelques secondes (freeze + animation changements de couleurs pour représenter l'électrocutions)
 - Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes
 - Implanter un timer dans le jeu pour les mordus qui voudront faire des speedruns
-- Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> --a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination--
+- Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> ~~a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination~~
 
 Pour tester le projet : 
 Compiler les fichiers au terminal puis executer fichier Jeu ou bien sinon utiliser IntelliJ qui compile tout à la fois 
