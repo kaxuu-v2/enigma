@@ -13,7 +13,7 @@ Quelques idées qu'on pourra coder une fois le problème des collisions réglé 
 - Pièges : si on se prend 3 fois le piège (on pourra changer le seuil plus tard si souhaité)
 - Trou : dès qu'on passe par dessus, on retourne au point de départ
 - Case qui éléctrocute : si on va dessus on se fait électrocuter pendant quelques secondes (freeze + animation changements de couleurs pour représenter l'électrocutions)
-- Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes
+- Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes -> on pourra directement implanter ca dans la case JeuGraphique en verifiant instanceof Freeze et ensuite mettre l'attribut etat a false puis attendre 3s = 3000ms puis la remettre a true 
 - Implanter un timer dans le jeu pour les mordus qui voudront faire des speedruns
 - Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> ok ~~a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination~~
 
