@@ -79,7 +79,11 @@ public class Labyrinthe {
                                 break;
                             case 'T':
                                 s = new Teleport(l, c);
+                                break;
                                 //on pourra ajouter d'autres cases pour les obstacles ou autres types de cases
+                            case 'F' :
+                                s = new Freeze(l,c);
+                                break;
                             default:
                                 s = new Ordinaire(l, c);
                                 break;

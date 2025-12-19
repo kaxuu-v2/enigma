@@ -42,17 +42,20 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 Square c = laby.getSquare(x,y);
 
                 if (c instanceof Mur){
-                    g.setColor(Color.DARK_GRAY); //on met les murs en noir
+                    g.setColor(Color.DARK_GRAY);
                 }
                 if (c instanceof Sortie){
-                    g.setColor(Color.GREEN); //on met la sortie en vert
+                    g.setColor(Color.GREEN);
                 }
                 if (c instanceof Ordinaire && c.isEmpty()){
-                    g.setColor(new Color(6,64,43)); //on mettra du blanc pour les cases vides
+                    g.setColor(new Color(6,64,43));
                 }
                 if (c instanceof Teleport){
                     Teleport t = (Teleport)c;
                     g.setColor(t.getColor());
+                }
+                if (c instanceof Freeze){
+                    g.setColor(Color.CYAN);
                 }
                 //ajouter les cas avec les autres types de cases
 
@@ -109,6 +112,20 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                     return;
                 } else if (s instanceof Teleport){
                     s.enter(this.boule);
+                } else if (s instanceof Freeze){
+                    Freeze f = (Freeze)s;
+                    if (f.ready()){
+                        System.out.println("Freeze");
+                        f.declenchement();
+                        this.etat = false;
+                        this.boule.stop();
+                        //this.repaint();
+                        Timer t = new Timer(3000, e -> {this.etat = true; System.out.println("Defreeze");}); //on remet a true apres les 3s ecoulées
+                        t.setRepeats(false); //on execute le timer une seule fois pour freeze le joueur puis on le réutilise plus
+                        /*explication : si on va par exemple sur un case freeze et qu'on retourne ensuite rapidement sur une autre,
+                        l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes*/
+                        t.start();
+                    }
                 }//ajouter du code pour les autres cases
             }
             this.boule.avance();
