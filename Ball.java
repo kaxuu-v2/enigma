@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.MouseListener;
 import java.lang.Math;
 
@@ -10,8 +11,7 @@ import java.lang.Math;
 
         private double x, y; //position de la boule
         private double vx, vy; //vitesse de la boule
-        private double v; //vitesse absolue
-
+        private Color couleur = Color.BLACK;
         public final double seuil = 0.15; //la vitesse a ne pas dépasser
 
         public Ball(double x, double y){
@@ -19,6 +19,10 @@ import java.lang.Math;
             this.y = y; //on initialise la position de la boule en début de jeu
             this.vx = 0; //initialement, la bille n'aura pas de vitesse
             this.vy = 0;
+        }
+
+        public void setColor(Color c){
+            this.couleur = c;
         }
 
         public double getSeuil(){ return this.seuil; }
@@ -113,5 +117,9 @@ import java.lang.Math;
         public void acceleration(double sx, double sy){
             this.vx += f_a * sx;
             this.vy += f_a * sy;
+        }
+
+        public Color getColor() {
+            return this.couleur;
         }
     }

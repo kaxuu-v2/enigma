@@ -19,10 +19,6 @@ public class Mur extends Square {
         //Idem que enter(Ball b)
     }
 
-    /*Note : Beaucoup trop complexe a coder et surtout très difficile a débugger,
-    on va subdiviser les cas en des méthodes séparées à la place de faire un seul touch().
-    */
-
     @Override
     public void touch(Ball b) {
         double r = Ball.rayon;

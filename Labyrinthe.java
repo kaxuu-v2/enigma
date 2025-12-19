@@ -73,8 +73,8 @@ public class Labyrinthe {
                                 s = new Sortie(l, c);
                                 break;
                             case 'D':
-                                this.initX = l;
-                                this.initY = c;
+                                this.initX = c;
+                                this.initY = l;
                                 s = new Ordinaire(l, c);
                                 break;
                             case 'T':
@@ -85,6 +85,9 @@ public class Labyrinthe {
                                 break;
                             case '!' :
                                 s = new Hole(l,c);
+                                break;
+                            case 'E' :
+                                s = new Electro(l,c);
                                 break;
                             //on pourra ajouter d'autres cases pour les obstacles ou autres types de cases
 

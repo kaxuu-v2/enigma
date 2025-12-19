@@ -61,6 +61,9 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 if (c instanceof Hole){
                     g.setColor(Color.BLACK);
                 }
+                if (c instanceof Electro){
+                    g.setColor(Color.MAGENTA);
+                }
                 //ajouter les cas avec les autres types de cases
 
                 g.fillRect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE); //tracage du contour du laby
@@ -69,7 +72,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
             }
         }
         //Dessin de la boule
-        g.setColor(Color.BLACK);
+        g.setColor(this.boule.getColor());
         int rayonPx = (int)(Ball.rayon * TAILLE_CASE);
 
         //Définition de la position de la boule en convertissant les coordonnées en int
@@ -114,8 +117,42 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 } else if (s instanceof Sortie){
                     niveauSuivant();
                     return;
-                } else if (s instanceof Teleport){
+                } else if (s instanceof Teleport) {
                     s.enter(this.boule);
+                } else if (s instanceof Electro){ //c'est le même procédé que pour freeze, seulement l'animation qui change
+                    Electro e = (Electro)s;
+                    if (e.ready()) {
+                        System.out.println("Bzzzzz");
+                        e.declenchement();
+                        this.etat = false;
+                        this.freezed = true;
+                        this.boule.stop();
+
+                        //on ajoute l'animation
+                        Timer anim = new Timer(100, e1 -> {
+                            if (this.boule.getColor() == Color.BLACK){
+                                this.boule.setColor(Color.CYAN);
+                                this.repaint();
+                                this.boule.setColor(Color.BLUE);
+                            } else {
+                                this.boule.setColor(Color.BLACK);
+                            }
+                            this.repaint();
+                        });
+
+                        //ajout de l'autre timer pour le délai
+                        Timer t = new Timer(3000, e2 -> {
+                            anim.stop(); //on arrête le timer pour l'animation, sinon la boule continuera de clignoter
+                            this.etat = true;
+                            this.freezed = false;
+                            this.boule.setColor(Color.BLACK);
+                            this.repaint();
+                            System.out.println("Fin d'électrocution");
+                        });
+                        anim.start();
+                        t.setRepeats(false);
+                        t.start();
+                    }
                 } else if (s instanceof Freeze){
                     Freeze f = (Freeze)s;
                     if (f.ready()){
@@ -124,19 +161,25 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         this.etat = false;
                         this.freezed = true;
                         this.boule.stop();
-                        //this.repaint();
-                        Timer t = new Timer(3000, e -> {this.etat = true; this.freezed = false; System.out.println("Defreeze");}); //on remet a true apres les 3s ecoulées
+                        this.boule.setColor(Color.WHITE);
+                        this.repaint();
+                        Timer t = new Timer(3000, e -> {
+                            this.etat = true;
+                            this.freezed = false;
+                            this.boule.setColor(Color.BLACK);
+                            System.out.println("Defreeze");
+                        }); //on remet a true apres les 3s ecoulées
                         t.setRepeats(false); //on execute le timer une seule fois pour freeze le joueur puis on le réutilise plus
-                        /*explication : si on va par exemple sur un case freeze et qu'on retourne ensuite rapidement sur une autre,
-                        l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes*/
+                        /* Explication : si on va par exemple sur un case freeze et qu'on retourne ensuite rapidement sur une autre,
+                        l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes */
                         t.start();
                     }
-                }
-                if (s instanceof Hole){
+                } else if (s instanceof Hole){
                     this.boule.setX(this.laby.getInitX());
                     this.boule.setY(this.laby.getInitY());
                     this.boule.stop();
-                }//ajouter du code pour les autres cases
+                    System.out.println("Il est tombé");
+                } //ajouter du code pour les autres cases
             }
             this.boule.avance();
         }
