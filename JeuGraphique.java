@@ -8,7 +8,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     private Ball boule;
     private boolean etat; //pour stocker l'état en jeu qui sera toujours par défaut en false
 
-    public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt"};
+    public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt"};
     private int currentLevel = 0;
 
     public final int TAILLE_CASE = 50; //taille en pixels pour une case
@@ -49,6 +49,10 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 }
                 if (c instanceof Ordinaire && c.isEmpty()){
                     g.setColor(new Color(6,64,43)); //on mettra du blanc pour les cases vides
+                }
+                if (c instanceof Teleport){
+                    Teleport t = (Teleport)c;
+                    g.setColor(t.getColor());
                 }
                 //ajouter les cas avec les autres types de cases
 
@@ -103,10 +107,10 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 } else if (s instanceof Sortie){
                     niveauSuivant();
                     return;
-                }
+                } else if (s instanceof Teleport){
+                    s.enter(this.boule);
+                }//ajouter du code pour les autres cases
             }
-
-            // Avancer la boule
             this.boule.avance();
         }
     }
@@ -117,8 +121,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         this.etat = !this.etat;
         //System.out.println("Clique");
         if (etat){
-            this.mouseX = getWidth() / 2;
-            this.mouseY = getHeight() / 2; //centrage de la souris
+            this.mouseX = e.getX();
+            this.mouseY = e.getY();
         }
     }
 
