@@ -1,8 +1,9 @@
 Voici ma version du projet de IPO. 
 
 Quelques remarques : 
-- Collision avec le mur de gauche et droite ok
+- Collision avec le mur de gauche et droite -> ok
 - Collision avec le mur de bas et haut A REVOIR (Note 18/12 : on met ce problème de côté pour le moment, on y reviendra plus tard)
+- Le jeu peut facilement se faire "bug abuse" en cas de freeze, comme elle met l'état a false alors cliquer suffit amplement a la remettre a true et donc reprendre le contrôle du jeu. Il faudrait ajouter un autre booléen destiné au freeze 
 
 Potentielle raison du problème de collision : 
 - En fait, lorsqu'on dessine une boule sur le terrain, on le dessine en partant du coin supérieur gauche, c'est pourquoi les cas avec des cases en haut et a gauche fonctionnent, alors que lorsque c'est pour le cases de bas et droite, le jeu a l'air d'attendre que la boule entre complètement dans la case pour appliquer une collision (donc a priori, on compare ce coin supérieur avec le mur)
