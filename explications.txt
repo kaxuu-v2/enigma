@@ -1,0 +1,32 @@
+Classe Ball : 
+
+Elle est importante pour le fonctionnement de la boule quant aux frottements, déplacements, etc. 
+On lui attribue des coordonnées x et y données sous la forme d'un réel (double) et une vitesse de déplacement. Par ailleurs, on a rajouté un seuil afin que la vitesse n'augmente pas trop rapidement. C'est également pourquoi on a rajouté une méthode limite qui permet de réduire la vitesse lorsqu'elle devient tres élevée
+On a aussi ajouté une méthode stop qui permet de remettre toutes les vitesse a 0, ce qui est utile lorsqu'on change de niveau par exemple ou bien qu'on réapparaît dans le plateau
+
+Classe Labyrinthe : 
+
+C'est grâce a cette classe qu'on pourra par la suite afficher graphiquement le labyrinthe 
+Fonctionnement : on met en entrée le nom du fichier txt dans lequel on aura d'abord entrée les dimensions dans le fichier, ces dimensions seront affectées aux attributs qui servent a stocker la hauteur et la largeur puis ensuite on va lire chaque caractere de chaque ligne et en fonction du cas dans le switch on renvoi le square correspondant. Concernant les téléporteurs, on stocke d'abord dans un tableau de taille choisie arbitrairement les n téléporteurs qu'on aura trouvé en lisant le fichier, pour le n-ième téléporteur trouvé, on le met dans le tableau des téléporteurs et on va ensuite trouver sa paire (qui sera le deuxième n dans le fichier)
+
+Exemple plus concret : Dans le fichier txt, on aimerais ajouter un téléporteur. On met deux "1" dans le fichier txt. Le constructeur va donc chercher le premier occurence de "1" et va ensuite le stocker dans le tableau, il va ensuite chercher le deuxième et va l'associer aux destinations correspondantes
+
+Classe JeuGraphique : 
+
+C'est ici que tout se passe, on y trouve des attributs tels que le labyrinthe, la boule car c'est ce qu'on va afficher ainsi que d'autres attributs comme l'état, les niveaux et la derniere position de la souris
+
+- Pourquoi etat ? Parce que si on n'a pas un tel attribut, le jeu sera considéré comme toujours en route même lorsque le curseur quitte l'écran, ce qui va entraîner une propulsion de la balle lorsque le curseur entrera. Un tel attribut permettrait donc de faire en sorte que le jeu soit mis en pause tant qu'on a pas cliqué et donc d'éviter ce genre de problèmes
+
+- Concernant les niveaux, on stocke tout dans un tableau de String qui va contenir les noms de fichiers et on a aussi un attribut pour le niveau actuel. A chaque fois qu'on change de niveau, on incrémente le niveau actuel et on change le niveau courant par le suivant 
+
+- Méthode update ? C'est ici que toutes les mises a jour se font, si le jeu est en cours (état = true) applique la physique du jeu (accélération, frottement) en mesurant de combien la souris a été déplacée par rapport au centre de l'écran. Pour gérer les interactions avec les cases, on essaye de chercher la future case dans laquelle se trouvera la boule (en faisant la position courant + les coordonnées du vecteur vitesse) et en fonction des conditions, on applique ce qu'il faut. 
+	
+	- Cas Mur : on applique les collisions (expliquer la théorie de la classe Mur) 
+	- Cas Sortie : on fait disparaitre la boule du plateau (en l'occurence, on a choisi de les mettre aux coordonnées (-32,-32) et on fait ensuite appraître une boite de dialogue qui propose de passer au niveau suivant ou bien de quitter le jeu
+	- Cas Teleport : on change les coordonnées pour les mettre dans celles de l'autre téléporteur et on met un délai de quelques secondes pour éviter les problèmes liés a la téléportation infinie 
+	- Cas Freeze : on met l'état a false pendant quelques secondes et on le remet a true 
+	- Cas Trou : on change les coordonnées de la boule pour les mettre a la position initiale 
+
+Classe Jeu : 
+
+C'est la classe principale dans laquelle le jeu va tourner, on l'initialise au premier niveau du jeu et on met en place le timer qui va faire appel a update et repaint toutes les 10ms 
