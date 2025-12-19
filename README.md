@@ -16,11 +16,12 @@ Quelques idées qu'on pourra coder une fois le problème des collisions réglé 
 - Case qui éléctrocute : si on va dessus on se fait électrocuter pendant quelques secondes (freeze + animation changements de couleurs pour représenter l'électrocutions)
 - Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes
 - Implanter un timer dans le jeu pour les mordus qui voudront faire des speedruns
-- Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination
+- Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> --a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination--
 
 Pour tester le projet : 
 Compiler les fichiers au terminal puis executer fichier Jeu ou bien sinon utiliser IntelliJ qui compile tout à la fois 
 
 Historique : 
-- 18/12 - J'ai terminé de coder la sortie et j'y ai ajouté une boite de dialogue qui donne le choix entre fermer le niveau et passer au suivant (voir code Sortie.java) + j'ai codé un deuxieme niveau pour le jeu 
+- 18/12 - J'ai terminé de coder la sortie et j'y ai ajouté une boite de dialogue qui donne le choix entre fermer le niveau et passer au suivant (voir code Sortie.java) + j'ai codé un deuxieme niveau pour le jeu
+- 19/12 - J'ai terminé de coder les téléporteurs et j'ai fait les ajustements dans les classes JeuGraphique et Labyrinthe. Fonctionnement des cases téléporteurs : dans le fichier texte, on indique le numéro du i-ème téléporteur par pairs (ce qui veut dire que dans un fichier texte, si on a un téléporteur alors il devrait y a voir deux fois "1" (voir laby4.txt pour plus de détails)) qui seront affichés en orange et en bleu (en référence au jeu Portal) et la classe possède un attribut pour stocker la derniere fois que le portail a été pris dans le but d'ajouter du délai et éviter des problèmes de téléportation infinie. 
 
