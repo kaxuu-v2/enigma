@@ -2,14 +2,14 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class JeuGraphique extends JPanel implements MouseListener, MouseMotionListener {
+public class JeuGraphique extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
     private Labyrinthe laby;
     private Ball boule;
     private boolean etat; //pour stocker l'état en jeu qui sera toujours par défaut en false
     private boolean freezed;
 
-    public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt"};
+    public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt", "levels/laby5.txt","levels/laby6.txt","levels/laby7.txt","levels/laby8.txt"};
     private int currentLevel = 0;
 
     public final int TAILLE_CASE = 50; //taille en pixels pour une case
@@ -30,6 +30,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        this.addKeyListener(this);
+        this.setFocusable(true);
 
         this.setPreferredSize(new Dimension(widthPx, heightPx)); //Définition des dimensions de la fenêtre
 
@@ -175,8 +177,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         t.start();
                     }
                 } else if (s instanceof Hole){
-                    this.boule.setX(this.laby.getInitX());
-                    this.boule.setY(this.laby.getInitY());
+                    this.boule.setX(this.laby.getInitX() + 0.5);
+                    this.boule.setY(this.laby.getInitY() + 0.5);
                     this.boule.stop();
                     System.out.println("Il est tombé");
                 } //ajouter du code pour les autres cases
@@ -269,7 +271,24 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
     }
 
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
     }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) { //on a ajouté ca afin de pouvoir passer directement les niveaux (pour tester les labyrinthes sans changer le laby initial dans le code)
+        if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL){
+            System.out.println("Skip");
+            niveauSuivant();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+
+    }
+}
 
 
 
