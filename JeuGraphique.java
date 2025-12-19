@@ -7,6 +7,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     private Labyrinthe laby;
     private Ball boule;
     private boolean etat; //pour stocker l'état en jeu qui sera toujours par défaut en false
+    private boolean freezed;
 
     public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt"};
     private int currentLevel = 0;
@@ -121,9 +122,10 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         System.out.println("Freeze");
                         f.declenchement();
                         this.etat = false;
+                        this.freezed = true;
                         this.boule.stop();
                         //this.repaint();
-                        Timer t = new Timer(3000, e -> {this.etat = true; System.out.println("Defreeze");}); //on remet a true apres les 3s ecoulées
+                        Timer t = new Timer(3000, e -> {this.etat = true; this.freezed = false; System.out.println("Defreeze");}); //on remet a true apres les 3s ecoulées
                         t.setRepeats(false); //on execute le timer une seule fois pour freeze le joueur puis on le réutilise plus
                         /*explication : si on va par exemple sur un case freeze et qu'on retourne ensuite rapidement sur une autre,
                         l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes*/
@@ -143,6 +145,10 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     //Implémentations des écouteurs
     @Override
     public void mouseClicked(MouseEvent e){
+        if (this.freezed){
+            System.out.println("Impossible ! Vous êtes en freeze !");
+            return;
+        }
         this.etat = !this.etat;
         //System.out.println("Clique");
         if (etat){
