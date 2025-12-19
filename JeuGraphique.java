@@ -57,6 +57,9 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 if (c instanceof Freeze){
                     g.setColor(Color.CYAN);
                 }
+                if (c instanceof Hole){
+                    g.setColor(Color.BLACK);
+                }
                 //ajouter les cas avec les autres types de cases
 
                 g.fillRect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE); //tracage du contour du laby
@@ -126,6 +129,11 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes*/
                         t.start();
                     }
+                }
+                if (s instanceof Hole){
+                    this.boule.setX(this.laby.getInitX());
+                    this.boule.setY(this.laby.getInitY());
+                    this.boule.stop();
                 }//ajouter du code pour les autres cases
             }
             this.boule.avance();
