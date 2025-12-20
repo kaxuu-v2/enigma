@@ -66,6 +66,9 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 if (c instanceof Electro){
                     g.setColor(Color.MAGENTA);
                 }
+                if (c instanceof Piege){
+                    g.setColor(new Color(153,101,21));
+                }
                 //ajouter les cas avec les autres types de cases
 
                 g.fillRect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE); //tracage du contour du laby
@@ -181,7 +184,41 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                     this.boule.setY(this.laby.getInitY() + 0.5);
                     this.boule.stop();
                     System.out.println("Il est tombé");
-                } //ajouter du code pour les autres cases
+                } else if (s instanceof Piege) {
+                    Piege p = (Piege) s;
+
+                    int pvAvant = p.getPv();
+                    p.enter(this.boule);
+
+                    if (p.getPv() > pvAvant) {
+                        System.out.println("Touché !");
+                        this.etat = false;
+                        this.freezed = true;
+                        this.boule.stop();
+                        this.boule.setColor(Color.RED); //quand on se prend la piege, la boule devient rouge
+                        this.repaint();
+
+                        Timer t = new Timer(1000, e -> {
+                            if (p.getPv() >= Piege.MAX_PV) { //on verifie si le joueur est mort (piegé plus de 3 fois)
+                                System.out.println("Mort !");
+                                this.boule.setX(this.laby.getInitX() + 0.5); //reapparition
+                                this.boule.setY(this.laby.getInitY() + 0.5);
+                                this.boule.stop();
+                                p.reset(); //remise a 0 des pv
+                            } else {
+                                p.resetCooldown(); //on laisse une seconde au joueur le temps de sortir de la case
+                            }
+                            //reprise du jeu
+                            this.etat = true;
+                            this.freezed = false;
+                            this.boule.setColor(Color.BLACK);
+                            this.repaint();
+                        });
+
+                        t.setRepeats(false);
+                        t.start();
+                    }
+                }//ajouter du code pour les autres cases
             }
             this.boule.avance();
         }
@@ -272,9 +309,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     }
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) {
-
-    }
+    public void keyTyped(KeyEvent keyEvent) {}
 
     @Override
     public void keyPressed(KeyEvent keyEvent) { //on a ajouté ca afin de pouvoir passer directement les niveaux (pour tester les labyrinthes sans changer le laby initial dans le code)
@@ -285,9 +320,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {
-
-    }
+    public void keyReleased(KeyEvent keyEvent) {}
 }
 
 

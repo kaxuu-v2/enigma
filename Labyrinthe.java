@@ -89,6 +89,9 @@ public class Labyrinthe {
                             case 'E' :
                                 s = new Electro(l,c);
                                 break;
+                            case 'P' :
+                                s = new Piege(l,c);
+                                break;
                             //on pourra ajouter d'autres cases pour les obstacles ou autres types de cases
 
                             default:
