@@ -11,7 +11,7 @@ Potentielle raison du problème de collision :
 Quelques idées qu'on pourra coder une fois le problème des collisions réglé : 
 - Case point de départ pour indiquer la position initiale de la boule en début de jeu -> ok 
 - Faire des plaques de pression (a priori une extension de la classe square) qui ouvrira une allée dès qu'on passe dessus (on pourra aussi ajouter du délai si on veut)
-- Pièges : si on se prend 3 fois le piège (on pourra changer le seuil plus tard si souhaité)
+- Pièges : si on se prend 3 fois le piège (on pourra changer le seuil plus tard si souhaité) -> ok
 - Trou : dès qu'on passe par dessus, on retourne au point de départ -> ok
 - Case qui éléctrocute : si on va dessus on se fait électrocuter pendant quelques secondes (freeze + animation changements de couleurs pour représenter l'électrocutions) -> ok
 - Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes -> on pourra directement implanter ca dans la case JeuGraphique en verifiant instanceof Freeze et ensuite mettre l'attribut etat a false puis attendre 3s = 3000ms puis la remettre a true -> ok
