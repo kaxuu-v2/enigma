@@ -8,6 +8,8 @@ Quelques remarques :
 Potentielle raison du problème de collision : 
 - En fait, lorsqu'on dessine une boule sur le terrain, on le dessine en partant du coin supérieur gauche, c'est pourquoi les cas avec des cases en haut et a gauche fonctionnent, alors que lorsque c'est pour le cases de bas et droite, le jeu a l'air d'attendre que la boule entre complètement dans la case pour appliquer une collision (donc a priori, on compare ce coin supérieur avec le mur)
 
+- Note 21/12 : En fait, je remarque que pour les cases interactives, on applique la meme chose qu'avec les mur (quand on part de la gauche il attend d'entrer dans la case, mais quand on part de la droite il applique l'algorithme correspondant lorsqu'elle entre en collision avec la case (même si elle n'y entre pas forcément). Donc finalement peut être que la problème viendrait de la méthode udppate() -> effectivement, j'ai modifié la méthode update pour qu'elle fasse mieux les collisions 
+
 Quelques idées qu'on pourra coder une fois le problème des collisions réglé : 
 - Case point de départ pour indiquer la position initiale de la boule en début de jeu -> ok 
 - Faire des plaques de pression (a priori une extension de la classe square) qui ouvrira une allée dès qu'on passe dessus (on pourra aussi ajouter du délai si on veut)
