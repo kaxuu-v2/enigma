@@ -2,7 +2,7 @@ Voici ma version du projet de IPO.
 
 Quelques remarques : 
 - Collision avec le mur de gauche et droite -> ok
-- Collision avec le mur de bas et haut A REVOIR (Note 18/12 : on met ce problème de côté pour le moment, on y reviendra plus tard)
+- Collision avec le mur de bas et haut A REVOIR (Note 18/12 : on met ce problème de côté pour le moment, on y reviendra plus tard) -> Problème réglé (la boule va un petit peu trop vite mais ca reste jouable)
 - Le jeu peut facilement se faire "bug abuse" en cas de freeze, comme elle met l'état a false alors cliquer suffit amplement a la remettre a true et donc reprendre le contrôle du jeu. Il faudrait ajouter un autre booléen destiné au freeze 
 
 Potentielle raison du problème de collision : 
@@ -28,4 +28,5 @@ Historique :
 - 19/12 - J'ai terminé de coder les téléporteurs et j'ai fait les ajustements dans les classes JeuGraphique et Labyrinthe. Fonctionnement des cases téléporteurs : dans le fichier texte, on indique le numéro du i-ème téléporteur par pairs (ce qui veut dire que dans un fichier texte, si on a un téléporteur alors il devrait y a voir deux fois "1" (voir laby4.txt pour plus de détails)) qui seront affichés en orange et en bleu (en référence au jeu Portal) et la classe possède un attribut pour stocker la derniere fois que le portail a été pris dans le but d'ajouter du délai et éviter des problèmes de téléportation infinie. + J'ai rajouté la classe pour la case qui gèle (pour plus de détails voir la classe JeuGraphique méthode update()) + J'ai codé la classe pour le trou + J'ai ajouté la classe pour les case qui électrocutent
 - 20/12 - J'ai terminé de coder les pièges. Fonctionnement : on a mis comme attributs des "pv" avec un seuil de 3, lorsque le jeu detecte qu'on entre dans un piege, il freeze le jeu, met la boule en rouge temporairement et ensuite on a 1seconde pour sortir du piege (grâce au timer) et si on se prend plus de 3 fois le piège, on retourne au point initial
 - 21/12 - Je remarque trop de redondances sur le code de JeuGraphique donc j'ajoute des méthodes directement (freze() et defreeze()) + pour un fonctionnement plus optimal du piege j'ai déplacé les attributs de pv dans la classe Ball. Motivation : la méthode update() verifie si les cases sont des instanceof freeze, piege, trou, etc. Donc imaginons qu'on est dans le cas ou c'est un trou, on aura donc aucun moyen de modifier les pv d'une case piège par exemple
+- J'ai réglé le soucis des collisions + j'ai modifié update() pour qu'il traite particulièrement les murs et donc mettre les autres cas dans un autre méthode séparée qui sera appelée par update() 
 
