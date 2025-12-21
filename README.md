@@ -19,7 +19,7 @@ Quelques idées qu'on pourra coder une fois le problème des collisions réglé 
 - Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes -> on pourra directement implanter ca dans la case JeuGraphique en verifiant instanceof Freeze et ensuite mettre l'attribut etat a false puis attendre 3s = 3000ms puis la remettre a true -> ok
 - Implanter un timer dans le jeu pour les speedruns
 - Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> ~~a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination~~ -> ok
-- On pourra proposer un "niveau 0" qui servira a introduire au joueur l'ensembles des cases
+- On pourra proposer un "niveau 0" qui servira a introduire au joueur l'ensembles des cases -> ok 
 
 Pour tester le projet : 
 Compiler les fichiers au terminal puis executer fichier Jeu ou bien sinon utiliser IntelliJ qui compile tout à la fois 
@@ -31,4 +31,5 @@ Historique :
 - 21/12 - Je remarque trop de redondances sur le code de JeuGraphique donc j'ajoute des méthodes directement (freze() et defreeze()) + pour un fonctionnement plus optimal du piege j'ai déplacé les attributs de pv dans la classe Ball. Motivation : la méthode update() verifie si les cases sont des instanceof freeze, piege, trou, etc. Donc imaginons qu'on est dans le cas ou c'est un trou, on aura donc aucun moyen de modifier les pv d'une case piège par exemple
 - J'ai réglé le soucis des collisions + j'ai modifié update() pour qu'il traite particulièrement les murs et donc mettre les autres cas dans un autre méthode séparée qui sera appelée par update()
 - J'ai aussi ajouté un classe pour créer des fausses cases de sortie (classe Fake) XD
+- J'ai terminé de coder le tutoriel 
 
