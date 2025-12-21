@@ -163,14 +163,11 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                     if (f.ready()){
                         System.out.println("Freeze");
                         f.declenchement();
-                        this.etat = false;
-                        this.freezed = true;
-                        this.boule.stop();
+                        this.freze();
                         this.boule.setColor(Color.WHITE);
                         this.repaint();
                         Timer t = new Timer(3000, e -> {
-                            this.etat = true;
-                            this.freezed = false;
+                            this.defreeze();
                             this.boule.setColor(Color.BLACK);
                             System.out.println("Defreeze");
                         }); //on remet a true apres les 3s ecoulées
@@ -180,41 +177,26 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         t.start();
                     }
                 } else if (s instanceof Hole){
-                    this.boule.setX(this.laby.getInitX() + 0.5);
-                    this.boule.setY(this.laby.getInitY() + 0.5);
-                    this.boule.stop();
+                    this.respawn();
                     System.out.println("Il est tombé");
                 } else if (s instanceof Piege) {
-                    Piege p = (Piege) s;
-
-                    int pvAvant = p.getPv();
-                    p.enter(this.boule);
-
-                    if (p.getPv() > pvAvant) {
-                        System.out.println("Touché !");
-                        this.etat = false;
-                        this.freezed = true;
-                        this.boule.stop();
-                        this.boule.setColor(Color.RED); //quand on se prend la piege, la boule devient rouge
+                    System.out.println("Piège");
+                    boolean b = this.boule.damage();
+                    if (b){
+                        this.freze();
+                        this.boule.setColor(Color.RED);
                         this.repaint();
 
                         Timer t = new Timer(1000, e -> {
-                            if (p.getPv() >= Piege.MAX_PV) { //on verifie si le joueur est mort (piegé plus de 3 fois)
+                            if (this.boule.getPv() <= 0){ //on verifie si le joueur est mort (il se prend plus de 3 fois le piege)
                                 System.out.println("Mort !");
-                                this.boule.setX(this.laby.getInitX() + 0.5); //reapparition
-                                this.boule.setY(this.laby.getInitY() + 0.5);
-                                this.boule.stop();
-                                p.reset(); //remise a 0 des pv
+                                this.respawn();
                             } else {
-                                p.resetCooldown(); //on laisse une seconde au joueur le temps de sortir de la case
+                                this.boule.invincible(); //on laisse 1s au joueur pour sortir de la case piege
                             }
-                            //reprise du jeu
-                            this.etat = true;
-                            this.freezed = false;
+                            this.defreeze();
                             this.boule.setColor(Color.BLACK);
-                            this.repaint();
                         });
-
                         t.setRepeats(false);
                         t.start();
                     }
@@ -222,6 +204,25 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
             }
             this.boule.avance();
         }
+    }
+
+    //j'ajoute un méthode respawn pour éviter la redondance du code
+    public void respawn(){
+        this.boule.setX(this.laby.getInitX());
+        this.boule.setY(this.laby.getInitY());
+        this.boule.stop();
+        this.boule.heal();
+    }
+
+    public void freze(){
+        this.etat = false;
+        this.freezed = true;
+        this.boule.stop();
+    }
+
+    public void defreeze(){
+        this.etat = true;
+        this.freezed = false;
     }
 
     //Implémentations des écouteurs

@@ -11,14 +11,39 @@ import java.lang.Math;
 
         private double x, y; //position de la boule
         private double vx, vy; //vitesse de la boule
-        private Color couleur = Color.BLACK;
+        private Color couleur = Color.BLACK; //on ajoute un attribut couleur pour l'animation
         public final double seuil = 0.15; //la vitesse a ne pas dépasser
+        private int pv = 3;
+        public static final int MAX_PV = 3;
+        public long lastDmg = 0; //pour stocker la derniere fois que la boule s'est prise des dégats
+
 
         public Ball(double x, double y){
             this.x = x;
             this.y = y; //on initialise la position de la boule en début de jeu
             this.vx = 0; //initialement, la bille n'aura pas de vitesse
             this.vy = 0;
+        }
+
+        public void heal(){
+            this.pv = MAX_PV;
+            this.lastDmg = 0;
+        }
+
+        public int getPv(){ return this.pv; }
+
+        public boolean damage(){
+            long now = System.currentTimeMillis();
+            if (now - lastDmg > 1000){
+                this.pv--;
+                this.lastDmg = now;
+                return true;
+            }
+            return false;
+        }
+
+        public void invincible(){
+            this.lastDmg = System.currentTimeMillis();
         }
 
         public void setColor(Color c){
