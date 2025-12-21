@@ -3,7 +3,7 @@ import java.awt.event.*;
 public class Jeu extends JPanel {
 
     public static void main(String[] args){
-        Labyrinthe laby = new Labyrinthe("levels/laby1.txt");
+        Labyrinthe laby = new Labyrinthe("levels/laby0.txt");
         double x = laby.getInitX();
         double y = laby.getInitY();
         Ball b = new Ball(x + Ball.rayon,y + Ball.rayon); //position choisie arbitrairement (on pourra coder une case départ pour que la boule s'y place a chaque niveau)

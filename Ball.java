@@ -112,12 +112,12 @@ import java.lang.Math;
         //Pour gérer les rebonds
         public void inverserVx() {
             this.vx = -this.vx;
-            System.out.println("Inversement du X");
+            //System.out.println("Inversement du X");
         }
 
         public void inverserVy() {
             this.vy = -this.vy;
-            System.out.println("Inversement du Y");
+            //System.out.println("Inversement du Y");
         }
 
         //on rajoute cette méthode pour que la vitesse soit remise a 0 apres chaque niveau

@@ -9,8 +9,21 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     private boolean etat; //pour stocker l'état en jeu qui sera toujours par défaut en false
     private boolean freezed;
 
-    public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt", "levels/laby5.txt","levels/laby6.txt","levels/laby7.txt","levels/laby8.txt"};
+    public final String[] levels = {"levels/laby0.txt", "levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt", "levels/laby5.txt","levels/laby6.txt","levels/laby7.txt","levels/laby8.txt", "levels/laby9.txt",
+                                    "levels/laby10.txt","levels/laby11.txt",};
     private int currentLevel = 0;
+
+
+    //pour le niveau 0
+    private boolean tutoMur = false;
+    private boolean tutoTrou = false;
+    private boolean tutoPiege = false;
+    private boolean tutoFreeze = false;
+    private boolean tutoElectro = false;
+    private boolean tutoTeleport = false;
+    private boolean tutoFake = false;
+    private boolean tutoSortie = false;
+    //Explication : on ajoute des booléens pour s'assurer que dans le tutoriel, on affichera le message qu'une seule fois
 
     public final int TAILLE_CASE = 40; //taille en pixels pour une case
 
@@ -173,6 +186,10 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
     // finalement, on va mettre les cas des cases spéciales dans un méthode a part
     private void traiterInteraction(Square s) {
+        if (this.currentLevel == 0) {
+            tutoriel(s);
+        }
+        //ici pas de else car sinon le code va pas appliquer les effets dans le tutoriel
         if (s instanceof Sortie){
             niveauSuivant();
             return;
@@ -281,6 +298,53 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         this.freezed = false;
     }
 
+    //on ajoute une méthode dédiée au niveau 0 (le tutoriel)
+    private void tutoriel(Square s) {
+        String titre = "";
+        String message = "";
+
+        if (s instanceof Fake && !tutoFake) {
+            titre = "Fausse sortie";
+            message = "Fais gaffe ! Ce trou vert est une illusion.\nCe n'est pas la vraie sortie !";
+            tutoFake = true;
+        }
+        else if (s instanceof Hole) {
+            titre = "Trou";
+            message = "Attention ! Tu viens de tomber dans un trou. Tu réapparais donc au point initial";
+            tutoTrou = true;
+        }
+        else if (s instanceof Piege && !tutoPiege) {
+            titre = "Piège";
+            message = "Aïe ! Ce piège t'enlève 1 Point de Vie.\nÀ 0 PV, tu meurs. (tu commences avec 3PV)";
+            tutoPiege = true;
+        }
+        else if (s instanceof Freeze && !tutoFreeze) {
+            titre = "Freeze";
+            message = "Cette case te gèle sur place.\nTu ne pourras plus bouger pendant quelques secondes.";
+            tutoFreeze = true;
+        }
+        else if (s instanceof Electro && !tutoElectro) {
+            titre = "Électricité";
+            message = "Cette case t'électrocute.\nIdem que le freeze, tu ne pourras plus bouger pendant quelques secondes!";
+            tutoElectro = true;
+        }
+        else if (s instanceof Teleport && !tutoTeleport) {
+            titre = "Téléporteur";
+            message = "Tu viens de te téléporter. A chaque fois que tu verras une case bleue, elle te mènera vers une case orange (et inversement)";
+            tutoTeleport = true;
+        }
+        else if (s instanceof Sortie && !tutoSortie) {
+            titre = "Sortie";
+            message = "C'est l'objectif ! Atteins cette case pour gagner le niveau.";
+            tutoSortie = true;
+        }
+        if (!message.isEmpty()){
+            this.boule.stop();
+            this.repaint(); //on reforce l'affichage
+            JOptionPane.showMessageDialog(this, message, "Tutoriel : " + titre, JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     //Implémentations des écouteurs
     @Override
     public void mouseClicked(MouseEvent e){
@@ -295,8 +359,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
             this.mouseY = e.getY();
         }
     }
-
-
+    
     @Override
     public void mousePressed(MouseEvent e){}
 
