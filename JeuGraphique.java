@@ -12,7 +12,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     public final String[] levels = {"levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt", "levels/laby5.txt","levels/laby6.txt","levels/laby7.txt","levels/laby8.txt"};
     private int currentLevel = 0;
 
-    public final int TAILLE_CASE = 50; //taille en pixels pour une case
+    public final int TAILLE_CASE = 40; //taille en pixels pour une case
 
     //Position de la souris
     private int mouseX, mouseY;
@@ -345,8 +345,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 this.laby = new Labyrinthe(levels[currentLevel]);
 
                 //mise en place du niveau suivant
-                double initialX = this.laby.getInitX() + 0.5;
-                double initialY = this.laby.getInitY() + 0.5;
+                double initialX = this.laby.getInitX() + Ball.rayon;
+                double initialY = this.laby.getInitY() + Ball.rayon;
                 this.boule.setX(initialX);
                 this.boule.setY(initialY);
                 this.boule.stop();

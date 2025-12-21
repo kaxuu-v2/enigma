@@ -33,8 +33,8 @@ public class Teleport extends Square {
     public void enter(Ball b) {
         long t = System.currentTimeMillis();
         if (destination != null && (t - this.lastTime > delay)) { //ici on verifie si 1 seconde s'est écoulé depuis la derniere entrée dans le portail
-            b.setX(this.destination.j + 0.5);
-            b.setY(this.destination.i + 0.5);
+            b.setX(this.destination.j + Ball.rayon);
+            b.setY(this.destination.i + Ball.rayon);
             b.stop();
             this.activation();
             this.destination.activation();
