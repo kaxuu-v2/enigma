@@ -208,8 +208,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
     //j'ajoute un méthode respawn pour éviter la redondance du code
     public void respawn(){
-        this.boule.setX(this.laby.getInitX());
-        this.boule.setY(this.laby.getInitY());
+        this.boule.setX(this.laby.getInitX() + Ball.rayon);
+        this.boule.setY(this.laby.getInitY() + Ball.rayon);
         this.boule.stop();
         this.boule.heal();
     }
