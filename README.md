@@ -8,7 +8,7 @@ Quelques remarques :
 Potentielle raison du problème de collision : 
 - En fait, lorsqu'on dessine une boule sur le terrain, on le dessine en partant du coin supérieur gauche, c'est pourquoi les cas avec des cases en haut et a gauche fonctionnent, alors que lorsque c'est pour le cases de bas et droite, le jeu a l'air d'attendre que la boule entre complètement dans la case pour appliquer une collision (donc a priori, on compare ce coin supérieur avec le mur)
 
-- Note 21/12 : En fait, je remarque que pour les cases interactives, on applique la meme chose qu'avec les mur (quand on part de la gauche il attend d'entrer dans la case, mais quand on part de la droite il applique l'algorithme correspondant lorsqu'elle entre en collision avec la case (même si elle n'y entre pas forcément). Donc finalement peut être que la problème viendrait de la méthode udppate() -> effectivement, j'ai modifié la méthode update pour qu'elle fasse mieux les collisions 
+- Note 21/12 : En fait, je remarque que pour les cases interactives, on applique la meme chose qu'avec les mur (quand on part de la gauche il attend d'entrer dans la case, mais quand on part de la droite il applique l'algorithme correspondant lorsqu'elle entre en collision avec la case (même si elle n'y entre pas forcément). Donc finalement peut être que la problème viendrait de la méthode udpate() -> effectivement c'était bien ça, j'ai modifié la méthode update pour qu'elle fasse mieux les collisions 
 
 Quelques idées qu'on pourra coder une fois le problème des collisions réglé : 
 - Case point de départ pour indiquer la position initiale de la boule en début de jeu -> ok 
@@ -19,6 +19,7 @@ Quelques idées qu'on pourra coder une fois le problème des collisions réglé 
 - Case qui gèle : si on va dessus on peut plus bouger pendant quelques secondes -> on pourra directement implanter ca dans la case JeuGraphique en verifiant instanceof Freeze et ensuite mettre l'attribut etat a false puis attendre 3s = 3000ms puis la remettre a true -> ok
 - Implanter un timer dans le jeu pour les speedruns
 - Des téléporteurs qui fonctionneront par pairs et qui comme le nom l'indique, téléporteront la bille (comme dans le jeu Portal) -> ~~a priori, une telle classe aura comme attributs deux cases qui correpondent a la source et a la destination~~ -> ok
+- On pourra proposer un "niveau 0" qui servira a introduire au joueur l'ensembles des cases
 
 Pour tester le projet : 
 Compiler les fichiers au terminal puis executer fichier Jeu ou bien sinon utiliser IntelliJ qui compile tout à la fois 
