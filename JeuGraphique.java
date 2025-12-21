@@ -69,6 +69,9 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 if (c instanceof Piege){
                     g.setColor(new Color(153,101,21));
                 }
+                if (c instanceof Fake){
+                    g.setColor(Color.GREEN);
+                }
                 //ajouter les cas avec les autres types de cases
 
                 g.fillRect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE); //tracage du contour du laby
@@ -227,7 +230,11 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes */
                         t.start();
                     }
-                } else if (s instanceof Hole){
+
+        } else if (s instanceof Fake){
+            this.respawn();
+            System.out.println(":P");
+        } else if (s instanceof Hole){
                     this.respawn();
                     System.out.println("Il est tombé");
                 } else if (s instanceof Piege) {
@@ -251,7 +258,8 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         t.setRepeats(false);
                         t.start();
                     }
-        }
+
+            }
     }
 
     //j'ajoute un méthode respawn pour éviter la redondance du code

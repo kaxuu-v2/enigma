@@ -92,6 +92,9 @@ public class Labyrinthe {
                             case 'P' :
                                 s = new Piege(l,c);
                                 break;
+                            case '?' :
+                                s = new Fake(l,c);
+                                break;
                             //on pourra ajouter d'autres cases pour les obstacles ou autres types de cases
 
                             default:
