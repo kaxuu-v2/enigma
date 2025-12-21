@@ -87,91 +87,142 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         g.fillOval(xPx, yPx, rayonPx * 2, rayonPx * 2);
     }
 
-    //Méthode qui actualise le jeu (ne fonctionne pas)
-
     public void update() {
         if (etat) {
+
             int centreX = this.getWidth() / 2;
             int centreY = this.getHeight() / 2;
             double dX = mouseX - centreX;
             double dY = mouseY - centreY;
 
-            // Appliquer l'accélération et les frottements
-            this.boule.acceleration(dX * 0.05, dY * 0.05);
+            this.boule.acceleration(dX * 0.025, dY * 0.025); //la boule allait trop vite malgré le seuil, je réduis donc un peu la vitesse
             this.boule.frottement();
 
-            // Stocker les coordonnées actuelles de la boule
-            double x = this.boule.getX();
-            double y = this.boule.getY();
-            double vx = this.boule.getVx();
-            double vy = this.boule.getVy();
+            //on récupère le rayon et le diamètre
+            double r = Ball.rayon;
+            double diametre = 2 * r;
 
-            // Calculer la future position de la boule
-            double futureX = x + vx;
-            double futureY = y + vy;
+            //gestion de l'axe X
+            double futureX = this.boule.getX() + this.boule.getVx();
+            double checkX;
 
-            // Vérifier les collisions avec les murs
-            int futureI = (int) futureX;
-            int futureJ = (int) futureY;
+            if (this.boule.getVx() > 0){ //si vx > 0 (on va a droite) alors on teste avec (x + diametre)
+                checkX = futureX + diametre;
+            } else {
+                checkX = futureX; //sinon on teste seulement avec x
+            }
 
-            // Empêcher les dépassements d'indices
-            if (futureI >= 0 && futureI < laby.getLargeur() && futureJ >= 0 && futureJ < laby.getHauteur()) {
-                Square s = this.laby.getSquare(futureI, futureJ);
-                if (s instanceof Mur) {
-                    s.touch(this.boule);
-                } else if (s instanceof Sortie){
-                    niveauSuivant();
-                    return;
-                } else if (s instanceof Teleport) {
-                    s.enter(this.boule);
-                } else if (s instanceof Electro){ //c'est le même procédé que pour freeze, seulement l'animation qui change
-                    Electro e = (Electro)s;
-                    if (e.ready()) {
-                        System.out.println("Bzzzzz");
-                        e.declenchement();
-                        this.etat = false;
-                        this.freezed = true;
-                        this.boule.stop();
+            int iX = (int) checkX; //c'est le bord qu'on va vérifier
+            int jY_haut = (int) (this.boule.getY()); //coordonnée du mur au dessus de la boule
+            int jY_bas  = (int) (this.boule.getY() + diametre); //coordonnées du mur en dessous
 
-                        //on ajoute l'animation
-                        Timer anim = new Timer(100, e1 -> {
-                            if (this.boule.getColor() == Color.BLACK){
-                                this.boule.setColor(Color.CYAN);
-                                this.repaint();
-                                this.boule.setColor(Color.BLUE);
-                            } else {
-                                this.boule.setColor(Color.BLACK);
-                            }
-                            this.repaint();
-                        });
+            // on s'assure que les coordonnées ne dépassent pas les bornes du labyrinthe sinon on a une erreur OutOfBoundsException
+            if (iX >= 0 && iX < laby.getLargeur()) {
+                Square murHaut = laby.getSquare(iX, jY_haut);
+                Square murBas = laby.getSquare(iX, jY_bas);
 
-                        //ajout de l'autre timer pour le délai
-                        Timer t = new Timer(3000, e2 -> {
-                            anim.stop(); //on arrête le timer pour l'animation, sinon la boule continuera de clignoter
-                            this.etat = true;
-                            this.freezed = false;
-                            this.boule.setColor(Color.BLACK);
-                            this.repaint();
-                            System.out.println("Fin d'électrocution");
-                        });
-                        anim.start();
-                        t.setRepeats(false);
-                        t.start();
-                    }
-                } else if (s instanceof Freeze){
-                    Freeze f = (Freeze)s;
-                    if (f.ready()){
-                        System.out.println("Freeze");
-                        f.declenchement();
-                        this.freze();
-                        this.boule.setColor(Color.WHITE);
+                if ((murHaut instanceof Mur) || (murBas instanceof Mur)) {
+                    this.boule.inverserVx(); //on vérifie si la case est un mur et si c'est le cas on applique les rebonds (inversement)
+                } else {
+                    //sinon on laisse la boule se déplacer
+                    this.boule.setX(futureX);
+                }
+            }
+
+            //on fait la même chose mais avec l'axe Y
+            double futureY = this.boule.getY() + this.boule.getVy();
+
+            double checkY;
+
+            if (this.boule.getVy() > 0){
+                checkY = futureY + diametre;
+            } else {
+                checkY = futureY;
+            }
+
+            int jY = (int) checkY;
+            int iX_gauche = (int) (this.boule.getX()); //coordonnée du mur a gauche
+            int iX_droite = (int) (this.boule.getX() + diametre); //coordonnée du mur a droite
+
+            //on verifie si les coordonnées dépassent pas les bornes
+            if (jY >= 0 && jY < laby.getHauteur()) {
+                Square murGauche = laby.getSquare(iX_gauche, jY);
+                Square murDroite = laby.getSquare(iX_droite, jY);
+
+                //application ou non des rebonds
+                if ((murGauche instanceof Mur) || (murDroite instanceof Mur)) {
+                    this.boule.inverserVy();
+                } else {
+                    this.boule.setY(futureY);
+                }
+            }
+
+            //on gère maintenant le cas des cases spéciales (on doit attendre que la case entre pour appliquer les algorithmes donc que le centre soit en contact avec la case)
+            int ballCentreX = (int) (this.boule.getX() + r);
+            int ballCentreY = (int) (this.boule.getY() + r);
+
+            if (ballCentreX >= 0 && ballCentreX < laby.getLargeur() && ballCentreY >= 0 && ballCentreY < laby.getHauteur()) {
+                Square s = this.laby.getSquare(ballCentreX, ballCentreY);
+                traiterInteraction(s);
+            }
+        }
+    }
+
+    // finalement, on va mettre les cas des cases spéciales dans un méthode a part
+    private void traiterInteraction(Square s) {
+        if (s instanceof Sortie){
+            niveauSuivant();
+            return;
+        } else if (s instanceof Teleport) {
+            s.enter(this.boule);
+        } else if (s instanceof Electro){ //c'est le même procédé que pour freeze, seulement l'animation qui change
+            Electro e = (Electro)s;
+            if (e.ready()) {
+                System.out.println("Bzzzzz");
+                e.declenchement();
+                this.etat = false;
+                this.freezed = true;
+                this.boule.stop();
+
+                //on ajoute l'animation
+                Timer anim = new Timer(100, e1 -> {
+                    if (this.boule.getColor() == Color.BLACK){
+                        this.boule.setColor(Color.CYAN);
                         this.repaint();
-                        Timer t = new Timer(3000, e -> {
-                            this.defreeze();
-                            this.boule.setColor(Color.BLACK);
-                            System.out.println("Defreeze");
-                        }); //on remet a true apres les 3s ecoulées
-                        t.setRepeats(false); //on execute le timer une seule fois pour freeze le joueur puis on le réutilise plus
+                        this.boule.setColor(Color.BLUE);
+                    } else {
+                        this.boule.setColor(Color.BLACK);
+                    }
+                    this.repaint();
+                });
+
+                //ajout de l'autre timer pour le délai
+                Timer t = new Timer(3000, e2 -> {
+                    anim.stop(); //on arrête le timer pour l'animation, sinon la boule continuera de clignoter
+                    this.etat = true;
+                    this.freezed = false;
+                    this.boule.setColor(Color.BLACK);
+                    this.repaint();
+                    System.out.println("Fin d'électrocution");
+                });
+                anim.start();
+                t.setRepeats(false);
+                t.start();
+            }
+        } else if (s instanceof Freeze){
+            Freeze f = (Freeze)s;
+            if (f.ready()){
+                System.out.println("Freeze");
+                f.declenchement();
+                this.freze();
+                this.boule.setColor(Color.WHITE);
+                this.repaint();
+                Timer t = new Timer(3000, e -> {
+                    this.defreeze();
+                    this.boule.setColor(Color.BLACK);
+                    System.out.println("Defreeze");
+                }); //on remet a true apres les 3s ecoulées
+                t.setRepeats(false); //on execute le timer une seule fois pour freeze le joueur puis on le réutilise plus
                         /* Explication : si on va par exemple sur un case freeze et qu'on retourne ensuite rapidement sur une autre,
                         l'autre va prendre en compte l'ancien timer et va donc pas forcement s'arrêter au bout des 3secondes */
                         t.start();
@@ -200,9 +251,6 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                         t.setRepeats(false);
                         t.start();
                     }
-                }//ajouter du code pour les autres cases
-            }
-            this.boule.avance();
         }
     }
 
@@ -295,8 +343,6 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 this.boule.setY(initialY);
                 this.boule.stop();
                 this.repaint();
-
-                //compléter
 
             } else {
                 JOptionPane.showMessageDialog(this, "Felicitations ! Vous avez fini le jeu !");

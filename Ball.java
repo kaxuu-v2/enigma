@@ -12,7 +12,7 @@ import java.lang.Math;
         private double x, y; //position de la boule
         private double vx, vy; //vitesse de la boule
         private Color couleur = Color.BLACK; //on ajoute un attribut couleur pour l'animation
-        public final double seuil = 0.15; //la vitesse a ne pas dépasser
+        public final double seuil = 0.06; //la vitesse a ne pas dépasser
         private int pv = 3;
         public static final int MAX_PV = 3;
         public long lastDmg = 0; //pour stocker la derniere fois que la boule s'est prise des dégats
