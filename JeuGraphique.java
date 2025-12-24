@@ -101,6 +101,29 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         int yPx = (int)(boule.getY() * TAILLE_CASE);
 
         g.fillOval(xPx, yPx, rayonPx * 2, rayonPx * 2);
+
+        //on ajoute un bloc pour indiquer au joueur quand il est en pause ou pas
+        if (!etat && !freezed){
+            g.setColor(new Color(0,0,0, 150));
+            g.fillRect(0,0, this.getWidth(),this.getHeight());
+
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            String message = "Cliquez pour jouer";
+
+            FontMetrics fm = g.getFontMetrics(); //on utilise FontMetrics pour récupérer les caracteristiques de la police de caracteres (taille, largeur, etc)
+            int texteLargeur = fm.stringWidth(message);
+            int texteHauteur = fm.getAscent();
+
+            //centrage du texte
+            int x = (this.getWidth() - texteLargeur) / 2;
+            int y = (this.getHeight() + texteHauteur) / 2;
+
+            //dessinage du texte
+            g.drawString(message, x, y);
+
+        }
+        
     }
 
     public void update() {
