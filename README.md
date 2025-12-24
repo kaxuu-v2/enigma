@@ -31,5 +31,6 @@ Historique :
 - 21/12 - Je remarque trop de redondances sur le code de JeuGraphique donc j'ajoute des méthodes directement (freze() et defreeze()) + pour un fonctionnement plus optimal du piege j'ai déplacé les attributs de pv dans la classe Ball. Motivation : la méthode update() verifie si les cases sont des instanceof freeze, piege, trou, etc. Donc imaginons qu'on est dans le cas ou c'est un trou, on aura donc aucun moyen de modifier les pv d'une case piège par exemple
 - J'ai réglé le soucis des collisions + j'ai modifié update() pour qu'il traite particulièrement les murs et donc mettre les autres cas dans un autre méthode séparée qui sera appelée par update()
 - J'ai aussi ajouté un classe pour créer des fausses cases de sortie (classe Fake) XD
-- J'ai terminé de coder le tutoriel 
+- J'ai terminé de coder le tutoriel
+- 24/12 - J'ai ajouté un écran de pause pour eviter que joueur se perde dans le jeu en se demandant s'il a bien lancé le jeu ou non
 
