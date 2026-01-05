@@ -33,4 +33,5 @@ Historique :
 - J'ai aussi ajouté un classe pour créer des fausses cases de sortie (classe Fake) XD
 - J'ai terminé de coder le tutoriel
 - 24/12 - J'ai ajouté un écran de pause pour eviter que joueur se perde dans le jeu en se demandant s'il a bien lancé le jeu ou non
+- 05/01 - J'ai ajouté un affichage pour le nombre de PV et le nombre de morts et j'ai retiré les System.out.print() 
 
