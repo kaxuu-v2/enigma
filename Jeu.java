@@ -6,7 +6,7 @@ public class Jeu extends JPanel {
         Labyrinthe laby = new Labyrinthe("levels/laby0.txt");
         double x = laby.getInitX();
         double y = laby.getInitY();
-        Ball b = new Ball(x + Ball.rayon,y + Ball.rayon); //position choisie arbitrairement (on pourra coder une case départ pour que la boule s'y place a chaque niveau)
+        Ball b = new Ball(x + Ball.rayon,y + Ball.rayon);
 
         JFrame frame = new JFrame("Enigma");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

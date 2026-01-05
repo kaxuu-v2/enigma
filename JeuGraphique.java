@@ -12,10 +12,10 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     public final String[] levels = {"levels/laby0.txt", "levels/laby1.txt", "levels/laby2.txt", "levels/laby3.txt", "levels/laby4.txt", "levels/laby5.txt","levels/laby6.txt","levels/laby7.txt","levels/laby8.txt", "levels/laby9.txt",
                                     "levels/laby10.txt","levels/laby11.txt",};
     private int currentLevel = 0;
+    private int deathsCount = 0; //on ajoute cet attribut pour specifier le nombre de morts dans le jeu
 
 
     //pour le niveau 0
-    private boolean tutoMur = false;
     private boolean tutoTrou = false;
     private boolean tutoPiege = false;
     private boolean tutoFreeze = false;
@@ -123,7 +123,37 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
             g.drawString(message, x, y);
 
         }
-        
+
+        //affichage des points de vie
+        int pv = this.boule.getPv();
+
+        int tailleForme = 20;//taille du carré qui representera les pv
+        int espacement = 10;//l'espacement entre les formes
+        int startX = 20; //positions x et y a l'écran
+        int startY = 20;
+
+        g.setColor(Color.WHITE); // Ou BLACK selon ton fond
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+        g.drawString("PV :", startX, startY + 17); //on ajoute 17 pour aligner le texte avec les blocs
+
+        //decalage du texte par rapport aux formes : 50 pixels
+        int decalageTexte = 50;
+
+        for (int i = 0; i < pv; i++) { //on dessine autant de carrés que de pv
+            g.setColor(Color.RED);
+            g.fillRect(startX + decalageTexte + (i * (tailleForme + espacement)), startY, tailleForme, tailleForme);
+            g.setColor(Color.BLACK); //on dessine un contour pour le visuel
+            g.drawRect(startX + decalageTexte + (i * (tailleForme + espacement)), startY, tailleForme, tailleForme);
+        }
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+        String texte = "Morts : " + this.deathsCount;
+        FontMetrics fm = g.getFontMetrics(); //permet de faire en sorte que le texte soit bien calé a droite, sinon le texte depasserait l'ecran si le nombre etait tres grand
+        int largeurTexte = fm.stringWidth(texte);
+        int xMorts = this.getWidth() - largeurTexte - 20;
+        int yMorts = 37;
+        g.drawString(texte, xMorts, yMorts);
     }
 
     public void update() {
@@ -221,7 +251,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         } else if (s instanceof Electro){ //c'est le même procédé que pour freeze, seulement l'animation qui change
             Electro e = (Electro)s;
             if (e.ready()) {
-                System.out.println("Bzzzzz");
+                //System.out.println("Bzzzzz");
                 e.declenchement();
                 this.etat = false;
                 this.freezed = true;
@@ -246,7 +276,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                     this.freezed = false;
                     this.boule.setColor(Color.BLACK);
                     this.repaint();
-                    System.out.println("Fin d'électrocution");
+                    //System.out.println("Fin d'électrocution");
                 });
                 anim.start();
                 t.setRepeats(false);
@@ -255,7 +285,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
         } else if (s instanceof Freeze){
             Freeze f = (Freeze)s;
             if (f.ready()){
-                System.out.println("Freeze");
+                //System.out.println("Freeze");
                 f.declenchement();
                 this.freze();
                 this.boule.setColor(Color.WHITE);
@@ -263,7 +293,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 Timer t = new Timer(3000, e -> {
                     this.defreeze();
                     this.boule.setColor(Color.BLACK);
-                    System.out.println("Defreeze");
+                    //System.out.println("Defreeze");
                 }); //on remet a true apres les 3s ecoulées
                 t.setRepeats(false); //on execute le timer une seule fois pour freeze le joueur puis on le réutilise plus
                         /* Explication : si on va par exemple sur un case freeze et qu'on retourne ensuite rapidement sur une autre,
@@ -273,12 +303,12 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
         } else if (s instanceof Fake){
             this.respawn();
-            System.out.println(":P");
+            //System.out.println(":P");
         } else if (s instanceof Hole){
                     this.respawn();
-                    System.out.println("Il est tombé");
+                    //System.out.println("Il est tombé");
                 } else if (s instanceof Piege) {
-                    System.out.println("Piège");
+                    //System.out.println("Piège");
                     boolean b = this.boule.damage();
                     if (b){
                         this.freze();
@@ -287,7 +317,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
                         Timer t = new Timer(1000, e -> {
                             if (this.boule.getPv() <= 0){ //on verifie si le joueur est mort (il se prend plus de 3 fois le piege)
-                                System.out.println("Mort !");
+                                //System.out.println("Mort !");
                                 this.respawn();
                             } else {
                                 this.boule.invincible(); //on laisse 1s au joueur pour sortir de la case piege
@@ -304,6 +334,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
 
     //j'ajoute un méthode respawn pour éviter la redondance du code
     public void respawn(){
+        deathsCount++;
         this.boule.setX(this.laby.getInitX() + Ball.rayon);
         this.boule.setY(this.laby.getInitY() + Ball.rayon);
         this.boule.stop();
@@ -372,7 +403,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void mouseClicked(MouseEvent e){
         if (this.freezed){
-            System.out.println("Impossible ! Vous êtes en freeze !");
+            //System.out.println("Impossible ! Vous êtes en freeze !");
             return;
         }
         this.etat = !this.etat;
@@ -419,7 +450,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 "Niveau terminé !",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                new ImageIcon("stringformat.ico"), //on pourra ajouter une icone plus tard
+                new ImageIcon(), //on pourra ajouter une icone plus tard
                 new String[]{"Niveau suivant", "Quitter"},
                 "Niveau suivant"
         );
@@ -439,7 +470,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
                 this.repaint();
 
             } else {
-                JOptionPane.showMessageDialog(this, "Felicitations ! Vous avez fini le jeu !");
+                JOptionPane.showMessageDialog(this, "Felicitations ! Vous avez fini le jeu en " + (this.deathsCount + 1) + " essais !");
                 System.exit(0);
             }
         } else {
@@ -455,7 +486,7 @@ public class JeuGraphique extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void keyPressed(KeyEvent keyEvent) { //on a ajouté ca afin de pouvoir passer directement les niveaux (pour tester les labyrinthes sans changer le laby initial dans le code)
         if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL){
-            System.out.println("Skip");
+            //System.out.println("Skip");
             niveauSuivant();
         }
     }

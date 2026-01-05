@@ -38,7 +38,7 @@ public class Teleport extends Square {
             b.stop();
             this.activation();
             this.destination.activation();
-            System.out.println("Teleportation");
+            //System.out.println("Teleportation");
         }
     }
 
